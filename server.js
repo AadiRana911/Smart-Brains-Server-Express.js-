@@ -34,7 +34,7 @@ const database = {
 }
 
 app.get('/', (req, res) => {
-    res.send('This is working')
+    res.send(database.users)
 })
 
 app.post('/signin', (req, res) => {
@@ -57,6 +57,18 @@ app.post('/register', (req, res) =>{
         }
     )
     res.json(database.users[database.users.length-1]);
+})
+
+app.get('/profile/:id', (req, res) => {
+    const { id } = req.params;
+    
+    database.users.forEach(user => {
+        if(id === user.id){
+            return res.json(user)
+        }
+    })
+
+    res.status(404).json('User Not Found');
 })
 
 app.listen(3000, () => {
